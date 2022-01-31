@@ -10,11 +10,11 @@ client.on("ready",() => {
     console.log(`Logged in as ${client.user.tag}!`)
     client.user.setActivity("!Help for commands");
 })
-client.on('messageCreate',()=>{
+client.on('messageCreate', msg =>{
     if(!msg.content.startsWith(prefix)|| msg.author.bot) return;
     const embed = new MessageEmbed()
     .setColor('PURPLE')
-    .setTitle('SussyBot')
+    .setTitle('KarlitoBot')
     .setDescription('Hello!, here below will be a list of commands for you to use!\n!dog - cute doggo\n!cat - cute catto\n!duck - cute ducko\n!quote - random quotes\n!trendinggif - random gifs that are currently popular\n!insult - insult your friends by @ them e.g (!insult @testest)\n!joke - funny jokes (some are pretty bad)\n!agent - gives you a random valorant agent and their abilities and other useful stuff\n This is a WIP, i hope you like it so far and any ideas are appreciated!!! <3')
     privateMessage(client,'!help', {embeds:[embed]} )
 })
