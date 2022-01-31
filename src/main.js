@@ -28,8 +28,11 @@ client.on('messageCreate', msg =>{
     const embed = new MessageEmbed()
     .setColor('PURPLE')
     .setTitle('KarlitoBot')
-    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
-    .setDescription('Music Commands!!!\n--play --playlist --pause --resume --skip --stop --shuffle --clearqueue')
+    .setDescription('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨\nHello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
+    .addFields(
+        {name:'Music Commands!!!',value:'--play --playlist --pause --resume --skip --stop --shuffle --clearqueue'},
+        {name:'This bot is a WIP project and i hope you like it! If you have any ideas on improvements let me know :D',value:'✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨'}
+        )
     privateMessage(client,'--help', {embeds:[embed]} )
 })
 
