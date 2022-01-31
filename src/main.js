@@ -11,6 +11,7 @@ client.on("ready",() => {
     client.user.setActivity("!Help for commands");
 })
 client.on('messageCreate',()=>{
+    if(!msg.content.startsWith(prefix)|| msg.author.bot) return;
     const embed = new MessageEmbed()
     .setColor('PURPLE')
     .setTitle('SussyBot')
