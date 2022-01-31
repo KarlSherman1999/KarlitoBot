@@ -1,24 +1,72 @@
 const { default: axios } = require('axios');
+const Discord = require('discord.js');
+const {Player,RepeatMode} = require('discord-music-player');
 const {Client,Intents, MessageEmbed} = require('discord.js');
-const client = new Client({intents:[Intents.FLAGS.GUILDS,Intents.FLAGS.GUILD_MESSAGES]})
+const client = new Client({
+    intents:[
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_VOICE_STATES
+]})
 require('dotenv').config();
-const prefix = '!'
+const prefix = '--'
 const privateMessage = require('./commands/private-message');
+
+const player = new Player(client, {
+    leaveOnEmpty: false, 
+});
+client.player = player;
 
 client.login(process.env.TOKEN);
 client.on("ready",() => {
     console.log(`Logged in as ${client.user.tag}!`)
-    client.user.setActivity("!Help for commands");
+    client.user.setActivity("--Help for commands");
 })
+
 client.on('messageCreate', msg =>{
     if(!msg.content.startsWith(prefix)|| msg.author.bot) return;
     const embed = new MessageEmbed()
     .setColor('PURPLE')
     .setTitle('KarlitoBot')
-    .setDescription('Hello!, here below will be a list of commands for you to use!\n!dog - cute doggo\n!cat - cute catto\n!duck - cute ducko\n!quote - random quotes\n!trendinggif - random gifs that are currently popular\n!insult - insult your friends by @ them e.g (!insult @testest)\n!joke - funny jokes (some are pretty bad)\n!agent - gives you a random valorant agent and their abilities and other useful stuff\n This is a WIP, i hope you like it so far and any ideas are appreciated!!! <3')
-    privateMessage(client,'!help', {embeds:[embed]} )
+    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
+    .setDescription('Music Commands!!!\n--play --playlist --pause --resume --skip --stop --shuffle --clearqueue')
+    privateMessage(client,'--help', {embeds:[embed]} )
 })
-client.on('messageCreate',msg =>{
+
+client.player
+    // Emitted when channel was empty.
+    .on('channelEmpty',  (queue) =>
+        console.log(`Everyone left the Voice Channel, queue ended.`))
+    // Emitted when a song was added to the queue.
+    .on('songAdd',  (queue, song) =>
+        console.log(`Song ${song} was added to the queue.`))
+    // Emitted when a playlist was added to the queue.
+    .on('playlistAdd',  (queue, playlist) =>
+        console.log(`Playlist ${playlist} with ${playlist.songs.length} was added to the queue.`))
+    // Emitted when there was no more music to play.
+    .on('queueDestroyed',  (queue) =>
+        console.log(`The queue was destroyed.`))
+    // Emitted when the queue was destroyed (either by ending or stopping).    
+    .on('queueEnd',  (queue) =>
+        console.log(`The queue has ended.`))
+    // Emitted when a song changed.
+    .on('songChanged', (queue, newSong, oldSong) =>
+        console.log(`${newSong} is now playing.`))
+    // Emitted when a first song in the queue started playing.
+    .on('songFirst',  (queue, song) =>
+        console.log(`Started playing ${song}.`))
+    // Emitted when someone disconnected the bot from the channel.
+    .on('clientDisconnect', (queue) =>
+        console.log(`I was kicked from the Voice Channel, queue ended.`))
+    // Emitted when deafenOnJoin is true and the bot was undeafened
+    .on('clientUndeafen', (queue) =>
+        console.log(`I got undefeanded.`))
+    // Emitted when there was an error in runtime
+    .on('error', (error, queue) => {
+        console.log(`Error: ${error} in ${queue.guild.name}`);
+    });
+
+client.on('messageCreate',async (msg) =>{
     if(!msg.content.startsWith(prefix)|| msg.author.bot) return;
 
     const args = msg.content.slice(prefix.length).split(/ +/);
@@ -28,8 +76,63 @@ client.on('messageCreate',msg =>{
         msg.reply("hello there, i hope you are having a great day :smiling_imp:");
     }
 
+    // Music
+    const  guildQueue = client.player.getQueue(msg.guild.id);
+    if(command === 'play') {
+        const queue = client.player.createQueue(msg.guild.id);
+        await queue.join(msg.member.voice.channel);
+        const song = await queue.play(args.join(' ')).catch(_ => {
+            if(!guildQueue)
+                queue.stop();
+        });
+    }
+    if(command === 'playlist') {
+        const queue = client.player.createQueue(msg.guild.id);
+        await queue.join(msg.member.voice.channel);
+        const song = await queue.playlist(args.join(' ')).catch(_ => {
+            if(!guildQueue)
+                queue.stop();
+        });
+    }
+    if(command === 'skip') {
+        {guildQueue ? guildQueue.skip() : null };
+    }
+    if(command === 'stop') {
+        {guildQueue ? guildQueue.stop() : null };
+    }
+    if(command === 'clearQueue') {
+        {guildQueue ? guildQueue.clearQueue() : null };
+    }
+    if(command === 'shuffle') {
+        {guildQueue ? guildQueue.shuffle() : null };
+    }
+    if(command === 'pause') {
+        {guildQueue ? guildQueue.setPaused(true) : null };
+    }
+    if(command === 'resume') {
+        {guildQueue ? guildQueue.setPaused(false) : null };
+    }
+    if(command === 'remove') {
+        {guildQueue ? guildQueue.remove(parseInt(args[0])) : null };
+    }
+    if(command === 'nowPlaying') {
+        console.log(`Now playing: ${guildQueue.nowPlaying}`);
+    }
+    if(command === 'getQueue') {
+        console.log(guildQueue);
+    }
+    if(command === 'removeLoop') {
+        {guildQueue ? guildQueue.setRepeatMode(RepeatMode.DISABLED) : null }; // or 0 instead of RepeatMode.DISABLED
+    }
+    if(command === 'toggleLoop') {
+        {guildQueue ? guildQueue.setRepeatMode(RepeatMode.SONG) : null }; // or 1 instead of RepeatMode.SONG
+    }
+    if(command === 'toggleQueueLoop') {
+        {guildQueue ? guildQueue.setRepeatMode(RepeatMode.QUEUE) : null }; // or 2 instead of RepeatMode.QUEUE
+    }
+
     // Api Calls
-    else if(command === "dog"){
+    if(command === "dog"){
         axios.get("https://dog.ceo/api/breeds/image/random")
         .then((res)=>{
             msg.reply(res.data.message)
