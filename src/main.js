@@ -74,8 +74,7 @@ client.on('messageCreate',async (msg) =>{
         {name:'Music Commands!!!',value:'--play --playlist --pause --resume --skip --stop --shuffle --clearqueue'},
         {name:'This bot is a WIP project and i hope you like it! If you have any ideas on improvements let me know :D',value:'✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨'}
         )
-    if (command === 'help'){
-        privateMessage(client,'--help', {embeds:[embed2]} )};
+    privateMessage(client,'--help', {embeds:[embed2]} )
 
     // Music
     const  guildQueue = client.player.getQueue(msg.guild.id);
