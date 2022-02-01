@@ -1,5 +1,6 @@
 const { default: axios } = require('axios');
 const Discord = require('discord.js');
+const fs = require('fs');
 const {Player,RepeatMode} = require('discord-music-player');
 const {Client,Intents, MessageEmbed} = require('discord.js');
 const client = new Client({
@@ -19,10 +20,17 @@ client.player = player;
 
 client.login(process.env.TOKEN);
 
+// client.commands = new Discord.Collection();
+// const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+// for(const file of commandFiles){
+//     const command = require(`./commands/${file}`);
+//     client.commands.set(command.name, command);
+// }
+
 const embed2 = new MessageEmbed()
     .setColor('PURPLE')
     .setTitle('KarlitoBot')
-    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
+    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--yugioh - random card\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
     .setImage("https://c.tenor.com/-z2KfO5zAckAAAAC/hello-there-baby-yoda.gif")
     .setTimestamp()
     .addFields(
@@ -79,6 +87,10 @@ client.on('messageCreate',async (msg) =>{
         msg.reply("hello there, i hope you are having a great day :smiling_imp:");
     }
 
+    if (command === "quiz"){
+        client.commands.get('trivia').execute(message,args);
+    }
+    
     // Music
     const  guildQueue = client.player.getQueue(msg.guild.id);
     if(command === 'play') {
@@ -177,18 +189,22 @@ client.on('messageCreate',async (msg) =>{
         })
         
     }
-    // else if(command === "yugioh"){
-    //     axios.get("https://db.ygoprodeck.com/api/v7/cardinfo.php/")
-    //     .then((res)=>{
-    //         // msg.reply();
-    //         // msg.reply(res);
-    //         console.log(res);
-    //     })
-    //     .catch((err)=>{
-    //         console.error('ERR:',err)
-    //     })
+    else if(command === "yugioh"){
+        axios.get("https://db.ygoprodeck.com/api/v7/cardinfo.php/")
+        .then((res)=>{
+            const num = Math.floor(Math.random()*(res.data.data.length));
+            const embed = new MessageEmbed()
+            .setColor('PURPLE')
+            .setTitle(res.data.data[num].name)
+            .setDescription(res.data.data[num].desc)
+            .setImage(res.data.data[num].card_images[0].image_url)
+            msg.reply({embeds:[embed]})
+        })
+        .catch((err)=>{
+            console.error('ERR:',err)
+        })
         
-    // }
+    }
     else if(command === "trendinggif"){
         axios.get(`https://g.tenor.com/v1/trending?id=8776030&key=${process.env.TENOR_API}`)
         .then((res)=>{
