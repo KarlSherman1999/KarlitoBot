@@ -18,9 +18,20 @@ const player = new Player(client, {
 client.player = player;
 
 client.login(process.env.TOKEN);
+
+const embed2 = new MessageEmbed()
+    .setColor('PURPLE')
+    .setTitle('KarlitoBot')
+    .setDescription('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨\nHello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
+    .addFields(
+        {name:'Music Commands!!!',value:'--play --playlist --pause --resume --skip --stop --shuffle --clearqueue'},
+        {name:'This bot is a WIP project and i hope you like it! If you have any ideas on improvements let me know :D',value:'✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨'}
+        )
+
 client.on("ready",() => {
     console.log(`Logged in as ${client.user.tag}!`)
     client.user.setActivity("--Help for commands");
+    privateMessage(client,'--help', {embeds:[embed2]} )
 })
 
 client.player
@@ -65,16 +76,6 @@ client.on('messageCreate',async (msg) =>{
     if (command === "hello"){
         msg.reply("hello there, i hope you are having a great day :smiling_imp:");
     }
-
-    const embed2 = new MessageEmbed()
-    .setColor('PURPLE')
-    .setTitle('KarlitoBot')
-    .setDescription('✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨\nHello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
-    .addFields(
-        {name:'Music Commands!!!',value:'--play --playlist --pause --resume --skip --stop --shuffle --clearqueue'},
-        {name:'This bot is a WIP project and i hope you like it! If you have any ideas on improvements let me know :D',value:'✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨✨'}
-        )
-    privateMessage(client,'--help', {embeds:[embed2]} )
 
     // Music
     const  guildQueue = client.player.getQueue(msg.guild.id);
