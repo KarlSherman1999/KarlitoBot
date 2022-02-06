@@ -12,6 +12,7 @@ const client = new Client({
 require('dotenv').config();
 const prefix = '--'
 const privateMessage = require('./commands/private-message');
+const quiz = require('./commands/trivia');
 
 const player = new Player(client, {
     leaveOnEmpty: false, 
@@ -20,13 +21,14 @@ client.player = player;
 
 client.login(process.env.TOKEN);
 
-// client.commands = new Discord.Collection();
-// const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-// for(const file of commandFiles){
-//     const command = require(`./commands/${file}`);
-//     client.commands.set(command.name, command);
-// }
+client.commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./src/commands/').filter(file => file.endsWith('.js'));
+for(const file of commandFiles){
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+}
 
+// Command Embed
 const embed2 = new MessageEmbed()
     .setColor('PURPLE')
     .setTitle('KarlitoBot')
@@ -87,8 +89,8 @@ client.on('messageCreate',async (msg) =>{
         msg.reply("hello there, i hope you are having a great day :smiling_imp:");
     }
 
-    if (command === "quiz"){
-        client.commands.get('trivia').execute(message,args);
+    if (command === "trivia"){
+        client.commands.get('trivia').execute(msg,args);
     }
     
     // Music
