@@ -12,7 +12,6 @@ const client = new Client({
 require('dotenv').config();
 const prefix = '--'
 const privateMessage = require('./commands/private-message');
-const quiz = require('./commands/trivia');
 
 const player = new Player(client, {
     leaveOnEmpty: false, 
@@ -32,7 +31,7 @@ for(const file of commandFiles){
 const embed2 = new MessageEmbed()
     .setColor('PURPLE')
     .setTitle('KarlitoBot')
-    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--yugioh - random card\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff')
+    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--yugioh - random card\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff\n--GenshinQ - A random question (Genshin only atm but working on Danganronpa and maybe league!)')
     .setImage("https://c.tenor.com/-z2KfO5zAckAAAAC/hello-there-baby-yoda.gif")
     .setTimestamp()
     .addFields(
@@ -89,7 +88,7 @@ client.on('messageCreate',async (msg) =>{
         msg.reply("hello there, i hope you are having a great day :smiling_imp:");
     }
 
-    if (command === "trivia"){
+    if (command === "genshinq"){
         client.commands.get('trivia').execute(msg,args);
     }
     
