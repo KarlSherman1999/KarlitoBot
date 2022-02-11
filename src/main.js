@@ -31,8 +31,8 @@ for(const file of commandFiles){
 const embed2 = new MessageEmbed()
     .setColor('PURPLE')
     .setTitle('KarlitoBot')
-    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--yugioh - random card\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff\n--GenshinQ - A random question (Genshin only atm but working on Danganronpa and maybe league!)')
-    .setImage("https://c.tenor.com/-z2KfO5zAckAAAAC/hello-there-baby-yoda.gif")
+    .setDescription('Hello!, here below will be a list of commands for you to use!\n--dog - cute doggo\n--cat - cute catto\n--duck - cute ducko\n--8ball\n--yugioh - random card\n--quote - random quotes\n--trendinggif - random gifs that are currently popular\n--insult - insult your friends by @ them e.g (--insult @testest)\n--joke - funny jokes (some are pretty bad)\n--agent - gives you a random valorant agent and their abilities and other useful stuff\n--GenshinQ - A Genshin related question\n--DanganQ - Danganronpa question')
+    .setImage("https://c.tenor.com/vykUH_Lq8XMAAAAd/dance-cat.gif")
     .setTimestamp()
     .addFields(
         {name:'Music Commands!!!',value:'--play --playlist --pause --resume --skip --stop --shuffle --clearqueue'},
@@ -89,7 +89,15 @@ client.on('messageCreate',async (msg) =>{
     }
 
     if (command === "genshinq"){
-        client.commands.get('trivia').execute(msg,args);
+        client.commands.get('genshintrivia').execute(msg,args);
+    }
+
+    if (command === "danganq"){
+        client.commands.get('dangantrivia').execute(msg,args);
+    }
+
+    if (command === "8ball"){
+        client.commands.get('8ball').execute(msg,args);
     }
     
     // Music

@@ -1,7 +1,7 @@
 const {MessageEmbed} = require('discord.js');
 
 module.exports={
-    name:"trivia",
+    name:"genshintrivia",
     description: "Genshin Quiz",
     category: "fun",
     async execute(msg,args){
