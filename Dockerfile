@@ -2,11 +2,12 @@ bashCopy code
 # Use the official Node.js image as the base image
 FROM node:16
 
+RUN npm install
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the application files into the working directory
-COPY . .
+COPY package*.json ./
 
 # Install the application dependencies
 RUN npm install
