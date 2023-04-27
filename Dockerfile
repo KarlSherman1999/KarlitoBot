@@ -7,7 +7,7 @@ RUN npm install
 WORKDIR /app
 
 # Copy the application files into the working directory
-COPY package.json ./
+COPY package.json
 
 # Install the application dependencies
 RUN npm install
