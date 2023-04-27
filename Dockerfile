@@ -16,5 +16,3 @@ COPY . .
 # Define the entry point for the container
 CMD ["node", "src/main.js"]
 
-# Expose port 3000 to the outside world
-EXPOSE 3000
