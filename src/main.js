@@ -3,6 +3,8 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const {Player,RepeatMode} = require('discord-music-player');
 const {Client,Intents, MessageEmbed} = require('discord.js');
+const express = require('express');
+const app = express();
 app.listen(3000)
 const client = new Client({
     intents:[
