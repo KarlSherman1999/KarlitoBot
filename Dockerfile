@@ -4,7 +4,7 @@ FROM node:16
 
 RUN npm install
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR . /discbot
 
 # Copy the application files into the working directory
 COPY package*.json ./
